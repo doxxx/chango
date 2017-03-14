@@ -5,42 +5,69 @@ import './UsageReport.css'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 
+function findPeriod(periods, week) {
+  for (var periodIndex = 0; periodIndex < periods.length; periodIndex++) {
+    var period = periods[periodIndex];
+    if (period.from.isSameOrBefore(week.from) && period.to.isSameOrAfter(week.to)) {
+      return { period, periodIndex }
+    }
+  }
+
+  return {}
+}
+
 class UsageReport extends Component {
   render() {
-    const { weeks } = this.props
+    const { weeks, periods } = this.props
 
     let rows = []
     let weekIndex = 1
 
     for (let week of weeks) {
+      let { period, periodIndex } = findPeriod(periods, week)
       let first = true
+
       for (let entry of week.entries) {
-        let entryCols = [
-          <td key="company" className="text-left">{entry.company}</td>,
-          <td key="tripCount" className="text-right">{entry.tripCount}</td>,
-          <td key="totalTripCost" className="text-right">${entry.totalTripCost.toFixed(2)}</td>
-        ]
+        let cols = []
+
         if (first) {
           first = false
-          rows.push(
-            <tr key={rows.length}>
-              <td rowSpan={week.entries.length} className="vert-center text-center">
-                {weekIndex}
+
+          if (period && period.from.isSame(week.from)) {
+            cols.push(
+              <td key="periodIndex" rowSpan={period.entryCount} className="vert-center text-center">
+                {periodIndex}
               </td>
-              <td rowSpan={week.entries.length} className="vert-center text-center">
-                {week.from.format(DATE_FORMAT)}
-              </td>
-              <td rowSpan={week.entries.length} className="vert-center text-center">
-                {week.to.format(DATE_FORMAT)}
-              </td>
-              {entryCols}
-            </tr>
+            )
+          }
+          else if (!period) {
+            cols.push(<td key="empty" rowSpan={week.entries.length}/>)
+          }
+
+          cols.push(
+            <td key="weekIndex" rowSpan={week.entries.length} className="vert-center text-center">
+              {weekIndex}
+            </td>
+          )
+          cols.push(
+            <td key="weekFrom" rowSpan={week.entries.length} className="vert-center text-center">
+              {week.from.format(DATE_FORMAT)}
+            </td>
+          )
+          cols.push(
+            <td key="weekTo" rowSpan={week.entries.length} className="vert-center text-center">
+              {week.to.format(DATE_FORMAT)}
+            </td>
           )
         }
-        else {
-          rows.push(<tr key={rows.length}>{entryCols}</tr>)
-        }
+
+        cols.push(<td key="company" className="text-left">{entry.company}</td>)
+        cols.push(<td key="tripCount" className="text-right">{entry.tripCount}</td>)
+        cols.push(<td key="totalTripCost" className="text-right">${entry.totalTripCost.toFixed(2)}</td>)
+
+        rows.push(<tr key={rows.length}>{cols}</tr>)
       }
+
       weekIndex++
     }
 
@@ -49,6 +76,7 @@ class UsageReport extends Component {
         <Table bordered condensed fill>
           <thead>
             <tr>
+              <th className="text-center">Period #</th>
               <th className="text-center">Week #</th>
               <th className="text-center">From</th>
               <th className="text-center">To</th>

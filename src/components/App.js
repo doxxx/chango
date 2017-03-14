@@ -35,7 +35,7 @@ class App extends Component {
       content = (
         <Row>
           <Col xs={12} md={8} mdOffset={2}><ClaimReport total={result.totalClaimAmount} periods={result.periods}/></Col>
-          <Col xs={12} md={8} mdOffset={2}><UsageReport weeks={result.weeks} /></Col>
+          <Col xs={12} md={8} mdOffset={2}><UsageReport weeks={result.weeks} periods={result.periods}/></Col>
         </Row>
       )
     }

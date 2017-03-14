@@ -105,16 +105,19 @@ function analyzeWeeks(weeks) {
         from: week.from,
         weekCount: 0,
         tripCount: 0,
-        totalTripCost: 0
+        totalTripCost: 0,
+        entryCount: 0
       }
     }
 
     period.weekCount++
     period.tripCount += sum(week.entries.map(e => e.tripCount))
     period.totalTripCost += sum(week.entries.map(e => e.totalTripCost))
+    period.entryCount += week.entries.length
 
     if (period.weekCount === 4) {
       if (period.tripCount >= 32) {
+        period.to = week.to
         periods.push(period)
       }
       period = null
