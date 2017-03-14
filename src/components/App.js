@@ -45,7 +45,7 @@ class App extends Component {
         <Grid fluid>
           <Row>
             <Col xs={12}>
-              <PageHeader>PRESTO Tax Credit Calculator</PageHeader>
+              <PageHeader>CHANGO <small>PRESTO Tax Claim Calculator</small></PageHeader>
             </Col>
           </Row>
           <Row>
