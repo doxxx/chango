@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+import './index.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -9,8 +10,6 @@ import reduxPromise from 'redux-promise'
 import reduxThunk from 'redux-thunk'
 import { Provider } from 'react-redux'
 import App from './components/App'
-
-import './index.css'
 
 import reducer from "./reducers"
 

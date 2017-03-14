@@ -29,13 +29,13 @@ class App extends Component {
 
     let content
     if (processing) {
-      content = <Alert bsStyle="info">Loading...</Alert>
+      content = <Row><Col xs={12} md={8} mdOffset={2}><Alert bsStyle="info">Loading...</Alert></Col></Row>
     }
     else if (result) {
       content = (
         <Row>
-          <Col xs={12} md={6}><ClaimReport total={result.totalClaimAmount}/></Col>
-          <Col xs={12} md={6}><UsageReport weeks={result.weeks} /></Col>
+          <Col xs={12} md={8} mdOffset={2}><ClaimReport total={result.totalClaimAmount}/></Col>
+          <Col xs={12} md={8} mdOffset={2}><UsageReport weeks={result.weeks} /></Col>
         </Row>
       )
     }
