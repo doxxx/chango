@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { PageHeader, Grid, Row, Col, Alert } from 'react-bootstrap'
+import { PageHeader, Grid, Row, Col, Alert, Navbar } from 'react-bootstrap'
 
 import './App.css'
 
@@ -55,6 +55,9 @@ class App extends Component {
           </Row>
           {content}
         </Grid>
+        <Navbar fixedBottom fluid>
+          <Navbar.Text>Website Copyright © 2017 Gordon Tyler. PRESTO Copyright © 2016 Metrolinx. This website is not sponsored, endorsed or produced by PRESTO.</Navbar.Text>
+        </Navbar>
       </div>
     )
   }
