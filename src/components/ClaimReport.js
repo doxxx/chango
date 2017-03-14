@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Panel } from 'react-bootstrap'
 
-function sum(array) {
-  return array.reduce((a,b) => a+b)
-}
+import {sum} from '../utils'
 
 class ClaimReport extends Component {
   render() {

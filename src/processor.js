@@ -2,6 +2,7 @@ import { PDFJS } from 'pdfjs-dist'
 import moment from 'moment'
 
 import * as actions from './actions'
+import { flatten, sum } from './utils'
 
 // Initialize PDFJS to use the worker script from mozilla.github.io
 PDFJS.workerSrc = 'http://mozilla.github.io/pdf.js/build/pdf.worker.js'
@@ -23,7 +24,7 @@ function pageOrder(a, b) {
 }
 
 function makeEntry(items) {
-  let [ company, tripCount, totalTripCost ] = items
+  let [company, tripCount, totalTripCost] = items
   return {
     company,
     tripCount: Number.parseInt(tripCount, 10),
@@ -72,10 +73,6 @@ const states = {
   }
 }
 
-function sum(array) {
-  return array.reduce((a,b) => a+b)
-}
-
 function processPageContent(content) {
   // order items by their position on the page, top to bottom, left to right
   let items = [...content.items]
@@ -98,10 +95,6 @@ function processPageContent(content) {
   return context.weeks
 }
 
-function flatten(arrays) {
-  return [].concat(...arrays)
-}
-
 function analyzeWeeks(weeks) {
   let periods = []
   let period
@@ -109,18 +102,18 @@ function analyzeWeeks(weeks) {
   for (let week of weeks) {
     if (!period) {
       period = {
-          from: week.from,
-          weeks: 0,
-          tripCount: 0,
-          totalTripCost: 0
-        }
+        from: week.from,
+        weekCount: 0,
+        tripCount: 0,
+        totalTripCost: 0
+      }
     }
 
-    period.weeks++
+    period.weekCount++
     period.tripCount += sum(week.entries.map(e => e.tripCount))
     period.totalTripCost += sum(week.entries.map(e => e.totalTripCost))
 
-    if (period.weeks === 4) {
+    if (period.weekCount === 4) {
       if (period.tripCount >= 32) {
         periods.push(period)
       }
@@ -128,7 +121,7 @@ function analyzeWeeks(weeks) {
     }
   }
 
-  if (period && period.weeks > 0 && period.tripCount >= 32) {
+  if (period && period.weekCount > 0 && period.tripCount >= 32) {
     periods.push(period)
   }
 
