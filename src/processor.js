@@ -103,40 +103,40 @@ function flatten(arrays) {
 }
 
 function analyzeWeeks(weeks) {
-  let months = []
-  let month
+  let periods = []
+  let period
 
   for (let week of weeks) {
-    if (!month) {
-      month = {
+    if (!period) {
+      period = {
           from: week.from,
           weeks: 0,
-          trips: 0,
-          cost: 0
+          tripCount: 0,
+          totalTripCost: 0
         }
     }
 
-    month.weeks++
-    month.trips += sum(week.entries.map(e => e.tripCount))
-    month.cost += sum(week.entries.map(e => e.totalTripCost))
+    period.weeks++
+    period.tripCount += sum(week.entries.map(e => e.tripCount))
+    period.totalTripCost += sum(week.entries.map(e => e.totalTripCost))
 
-    if (month.weeks === 4) {
-      if (month.trips >= 32) {
-        months.push(month)
+    if (period.weeks === 4) {
+      if (period.tripCount >= 32) {
+        periods.push(period)
       }
-      month = null
+      period = null
     }
   }
 
-  if (month && month.weeks > 0 && month.trips >= 32) {
-    months.push(month)
+  if (period && period.weeks > 0 && period.tripCount >= 32) {
+    periods.push(period)
   }
 
-  let totalClaimAmount = sum(months.map(m => m.cost))
+  let totalClaimAmount = sum(periods.map(m => m.totalTripCost))
 
   return {
     weeks,
-    months,
+    periods,
     totalClaimAmount
   }
 }

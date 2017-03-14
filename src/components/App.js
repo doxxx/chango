@@ -34,7 +34,7 @@ class App extends Component {
     else if (result) {
       content = (
         <Row>
-          <Col xs={12} md={8} mdOffset={2}><ClaimReport total={result.totalClaimAmount}/></Col>
+          <Col xs={12} md={8} mdOffset={2}><ClaimReport total={result.totalClaimAmount} periods={result.periods}/></Col>
           <Col xs={12} md={8} mdOffset={2}><UsageReport weeks={result.weeks} /></Col>
         </Row>
       )
